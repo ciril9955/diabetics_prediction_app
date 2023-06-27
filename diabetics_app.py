@@ -12,7 +12,10 @@ def diabetics_prediction(input_data):
     # reshape the array as we are predicting for one instance
     input_data_reshaped = input_data_as_numpy_array.reshape(1, -1)
 
-    prediction = loaded_model.predict(input_data_reshaped)
+    # Scale the input data using the same StandardScaler instance used for training
+    input_data_scaled = sc.transform(input_data_reshaped)
+
+    prediction = loaded_model.predict(input_data_scaled)
     print(prediction)
 
     if prediction == 0:
@@ -22,7 +25,11 @@ def diabetics_prediction(input_data):
 
 # web page
 def main():
-    st.set_page_config(page_title='Diabetes Prediction App', page_icon="🏥")
+    st.set_page_config(
+        page_title='Diabetes Prediction App',
+        page_icon="🏥"
+    )
+
     st.title('Diabetes Prediction App')
     Pregnancies = st.text_input("Number of Pregnancies:")
     Glucose = st.text_input("Glucose Level:")
